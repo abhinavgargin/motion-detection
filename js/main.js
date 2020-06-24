@@ -19,6 +19,10 @@ let recordedBlobs;
 const errorMsgElement = document.querySelector('span#errorMsg');
 const recordedVideo = document.querySelector('video#recorded');
 const recordButton = document.querySelector('button#record');
+const analyzeButton = document.querySelector('button#analyze');
+const ul = document.getElementById('result');
+const url = 'https://randomuser.me/api/?results=10';
+
 recordButton.addEventListener('click', () => {
   if (recordButton.textContent === 'Start Recording') {
     startRecording();
@@ -27,6 +31,7 @@ recordButton.addEventListener('click', () => {
     recordButton.textContent = 'Start Recording';
     playButton.disabled = false;
     downloadButton.disabled = false;
+	analyzeButton.disabled = false;
   }
 });
 
@@ -59,6 +64,39 @@ function downloadRecording() {
     window.URL.revokeObjectURL(url);
   }, 100);
 }
+
+analyzeButton.addEventListener('click', () => {
+	analyzeRecording();
+});
+function analyzeRecording(){
+	fetch(url)
+  .then((resp) => resp.json())
+  .then(function(data) {
+    let authors = data.results;
+    return authors.map(function(author) {
+      let li = createNode('li'),
+          img = createNode('img'),
+          span = createNode('span');
+      img.src = author.picture.medium;
+      span.innerHTML = `${author.name.first} ${author.name.last}`;
+      append(li, img);
+      append(li, span);
+      append(ul, li);
+    })
+  })
+  .catch(function(error) {
+    console.log(error);
+  }); 
+}
+
+function createNode(element) {
+	return document.createElement(element); // Create the type of element you pass in the parameters
+}
+
+function append(parent, el) {
+	return parent.appendChild(el); // Append the second parameter(element) to the first one
+}
+
 
 function handleDataAvailable(event) {
   console.log('handleDataAvailable', event);
@@ -95,6 +133,7 @@ function startRecording() {
   recordButton.textContent = 'Stop Recording';
   playButton.disabled = true;
   downloadButton.disabled = true;
+  analyzeButton.disabled = true;
   mediaRecorder.onstop = (event) => {
     console.log('Recorder stopped: ', event);
     console.log('Recorded Blobs: ', recordedBlobs);
