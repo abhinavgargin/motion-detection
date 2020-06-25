@@ -17,18 +17,21 @@ let mediaRecorder;
 let recordedBlobs;
 
 const errorMsgElement = document.querySelector('span#errorMsg');
-const recordedVideo = document.querySelector('video#recorded');
+//const recordedVideo = document.querySelector('video#recorded');
 const recordButton = document.querySelector('button#record');
 const analyzeButton = document.querySelector('button#analyze');
+const questionsDiv = document.getElementById('questions');
 const ul = document.getElementById('result');
 const url = 'https://randomuser.me/api/?results=10';
 
+
 recordButton.addEventListener('click', () => {
-  if (recordButton.textContent === 'Start Recording') {
+  if (recordButton.textContent === 'Start Test') {
     startRecording();
+	questionsDiv.style.display = "block";
   } else {
     stopRecording();
-    recordButton.textContent = 'Start Recording';
+    recordButton.textContent = 'Start Test';
     playButton.disabled = false;
     downloadButton.disabled = false;
 	analyzeButton.disabled = false;
@@ -37,12 +40,12 @@ recordButton.addEventListener('click', () => {
 
 const playButton = document.querySelector('button#play');
 playButton.addEventListener('click', () => {
-  const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
+  /*const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
   recordedVideo.src = null;
   recordedVideo.srcObject = null;
   recordedVideo.src = window.URL.createObjectURL(superBuffer);
   recordedVideo.controls = true;
-  recordedVideo.play();
+  recordedVideo.play();*/
 });
 
 const downloadButton = document.querySelector('button#download');
@@ -130,7 +133,7 @@ function startRecording() {
   }
 
   console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
-  recordButton.textContent = 'Stop Recording';
+  recordButton.textContent = 'Stop Test';
   playButton.disabled = true;
   downloadButton.disabled = true;
   analyzeButton.disabled = true;
@@ -169,10 +172,11 @@ async function init(constraints) {
 }
 
 document.querySelector('button#start').addEventListener('click', async () => {
-  const hasEchoCancellation = document.querySelector('#echoCancellation').checked;
+  //const hasEchoCancellation = document.querySelector('#echoCancellation').checked;
+  
   const constraints = {
     audio: {
-      echoCancellation: {exact: hasEchoCancellation}
+      echoCancellation: {exact: false}
     },
     video: {
       width: 1280, height: 720
