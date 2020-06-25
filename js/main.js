@@ -71,26 +71,11 @@ function downloadRecording() {
 analyzeButton.addEventListener('click', () => {
 	analyzeRecording();
 });
-function analyzeRecording(){
-	fetch(url)
-  .then((resp) => resp.json())
-  .then(function(data) {
-    let authors = data.results;
-    return authors.map(function(author) {
-      let li = createNode('li'),
-          img = createNode('img'),
-          span = createNode('span');
-      img.src = author.picture.medium;
-      span.innerHTML = `${author.name.first} ${author.name.last}`;
-      append(li, img);
-      append(li, span);
-      append(ul, li);
-    })
-  })
-  .catch(function(error) {
-    console.log(error);
-  }); 
-}
+async function analyzeRecording(){
+  let response = await fetch('http://localhost:5000/', { mode: 'no-cors' });
+  let data = await response.json;
+  return data;
+  }
 
 function createNode(element) {
 	return document.createElement(element); // Create the type of element you pass in the parameters
