@@ -7,14 +7,14 @@ var myvideo = document.getElementById('myvideo'),
     var i=0;
     var t=0;
     submitbutton.addEventListener("click", function () {
-        var url = "js/Time_of_movements.csv";
+        var url = "../Time_of_movements.csv";
 
         var request = new XMLHttpRequest();  
     request.open("GET", url, false);   
-    request.send(null);  
+    request.send();  
 
    var jsonObject = request.responseText.split(/\r?\n|\r/);
-    for (var j = 1; j < jsonObject.length; j++) {
+    for (var j = 1; j < jsonObject.length-1; j++) {
         //console.log(jsonObject[i].split(',')[1])
     csvData.push(jsonObject[j].split(',')[1]);
         }
