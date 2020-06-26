@@ -28,7 +28,7 @@ while True:
 	# Reading frame(image) from video 
 	check, frame = video.read() 
 	fgmask = fgbg.apply(frame)
-
+		
 	# Initializing motion = 0(no motion) 
 	motion = 0
 
@@ -61,13 +61,12 @@ while True:
 					cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) 
 
 	for contour in cnts: 
-		if cv2.contourArea(contour) < 10000: 
-			continue
-		motion = 1
-
-		(x, y, w, h) = cv2.boundingRect(contour) 
-		# making green rectangle arround the moving object 
-		cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2) 
+		if cv2.contourArea(contour) > 1000: 
+			if motion == 0:
+				motion = 1
+			(x, y, w, h) = cv2.boundingRect(contour) 
+			# making green rectangle arround the moving object 
+			cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2) 
 
 	# Appending status of motion 
 	motion_list.append(motion)
