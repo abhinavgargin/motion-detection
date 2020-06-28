@@ -72,7 +72,7 @@ analyzeButton.addEventListener('click', () => {
 	analyzeRecording();
 });
 async function analyzeRecording(){
-  let response = await fetch('http://localhost:5000/', { mode: 'no-cors' });
+  let response = await fetch('http://localhost:5000/');
   let data = await response.json;
   return data;
   }
